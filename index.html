@@ -13,7 +13,7 @@
   /* RESET & BASE STYLES */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* DESIGN TOKENS */
+  /* DESIGN TOKENS - Colors and Fonts */
   :root {
     --navy: #0D2340;
     --navy-80: #1a3a5c;
@@ -53,7 +53,7 @@
   .nav-links a:hover { color: #fff; }
   .nav-cta { background: var(--teal); color: #fff; padding: 8px 20px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; }
 
-  /* HERO */
+  /* HERO SECTION */
   .hero { 
     background: var(--navy); min-height: 100vh; display: flex; align-items: center; 
     padding: 120px 80px 80px;
@@ -139,7 +139,7 @@
     width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; font-family: var(--font-body); font-size: 15px;
   }
 
-  /* TABS */
+  /* TAB SWITCHER */
   .tab-switcher { display: flex; gap: 4px; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 4px; margin-top: 32px; width: fit-content; }
   .tab-btn { padding: 8px 20px; border-radius: 6px; font-size: 14px; font-weight: 500; cursor: pointer; border: none; background: transparent; color: rgba(255,255,255,0.5); }
   .tab-btn.active { background: var(--teal); color: #fff; }
@@ -283,44 +283,38 @@
     <h2 style="font-family: var(--font-display); margin-bottom: 8px;">Executive Application</h2>
     <p style="font-size:14px; color:var(--text-muted); margin-bottom:24px;">Apply to join our vetted talent pool.</p>
     
-    <!-- Updated to use handleAutomation -->
-    async function handleAutomation(event, type) {
-  event.preventDefault();
-  
-  const form = event.target;
-  const btn = form.querySelector('button');
-  const formData = new FormData(form);
-  const data = Object.fromEntries(formData.entries());
-
-  btn.innerText = "Processing...";
-  btn.disabled = true;
-
-  try {
-    const response = await fetch('/api/apply', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type, data })
-    });
-
-    // Parse the JSON error message from the server
-    const result = await response.json();
-
-    if (response.ok) {
-      alert("Success! Data saved.");
-      closeModal(null, type);
-      form.reset();
-    } else {
-      // THIS WILL NOW ALERT THE ACTUAL ERROR (e.g., "column _subject does not exist")
-      alert("Server Error: " + (result.details || result.error || "Unknown Error"));
-      console.error("Server Result:", result);
-    }
-  } catch (err) {
-    alert("Connection Error: Could not reach the server.");
-  } finally {
-    btn.innerText = "Submit";
-    btn.disabled = false;
-  }
-}
+    <form onsubmit="handleAutomation(event, 'exec')">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" name="full_name" required>
+      </div>
+      <div class="form-group">
+        <label>Work Email</label>
+        <input type="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label>LinkedIn Profile URL</label>
+        <input type="url" name="linkedin_url" required>
+      </div>
+      <div class="form-group">
+        <label>Primary Role</label>
+        <select name="primary_role">
+          <option value="ceo">Fractional CEO</option>
+          <option value="cfo">Fractional CFO</option>
+          <option value="cto">Fractional CTO</option>
+          <option value="cmo">Fractional CMO</option>
+          <option value="coo">Fractional COO</option>
+          <option value="sales">Fractional Head of Sales</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Years of Executive Exp.</label>
+        <input type="number" name="years_exp" required>
+      </div>
+      <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">Submit Application</button>
+    </form>
+  </div>
+</div>
 
 <!-- AUTOMATED: COMPANY MODAL -->
 <div id="modal-company" class="modal-overlay" onclick="closeModal(event, 'company')">
@@ -329,7 +323,6 @@
     <h2 style="font-family: var(--font-display); margin-bottom: 8px;">Post a Hiring Need</h2>
     <p style="font-size:14px; color:var(--text-muted); margin-bottom:24px;">Get matched with vetted talent in 48 hours.</p>
     
-    <!-- Updated to use handleAutomation -->
     <form onsubmit="handleAutomation(event, 'company')">
       <div class="form-group">
         <label>Company Name</label>
@@ -374,16 +367,13 @@ function switchTab(evt, tabName) {
 }
 
 /**
- * Modal Logic: Open
+ * Modal Logic: Open/Close
  */
 function openModal(type) {
   document.getElementById('modal-' + type).classList.add('active');
   document.body.style.overflow = 'hidden';
 }
 
-/**
- * Modal Logic: Close
- */
 function closeModal(event, type) {
   if (!event || event.target === document.getElementById('modal-' + type) || event.target.className === 'close-modal') {
     document.getElementById('modal-' + type).classList.remove('active');
@@ -393,7 +383,7 @@ function closeModal(event, type) {
 
 /**
  * NEW: Automated Form Handler
- * Talks to the Vercel API, which talks to Supabase and Resend
+ * Integrated with enhanced error reporting.
  */
 async function handleAutomation(event, type) {
   event.preventDefault(); // Stop standard form refresh
@@ -409,23 +399,26 @@ async function handleAutomation(event, type) {
   btn.disabled = true;
 
   try {
-    // Call the Vercel API Route you created in /api/apply.js
     const response = await fetch('/api/apply', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type, data })
     });
 
+    const result = await response.json();
+
     if (response.ok) {
-      alert("Success! We have received your submission and an email confirmation is on its way.");
+      alert("Success! We have received your submission.");
       closeModal(null, type);
       form.reset();
     } else {
-      throw new Error('API Response Error');
+      // Show exactly what the server didn't like (e.g., column mismatch)
+      alert("Server Error: " + (result.details || result.error || "Check Vercel Logs"));
+      console.error("Server Result:", result);
     }
   } catch (err) {
     console.error(err);
-    alert("Connection error. Please check your internet and try again.");
+    alert("Connection error. Check your internet or Vercel logs.");
   } finally {
     // Reset button state
     btn.innerText = originalBtnText;
