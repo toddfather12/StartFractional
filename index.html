@@ -74,12 +74,13 @@
     text-decoration: none; border: none; cursor: pointer; transition: all 0.15s; 
   }
   .btn-primary:hover { background: var(--teal-mid); transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-  /* THE PROCESS SECTION - WITH ADDED PADDING */
+  /* THE PROCESS SECTION */
   .section { padding: 96px 80px; }
   .how-bg { 
     background: var(--navy); 
-    padding-left: 100px; padding-right: 100px; /* EXTRA EDGE PADDING AS REQUESTED */
+    padding-left: 100px; padding-right: 100px; 
   }
   .section-inner { max-width: 1280px; margin: 0 auto; }
   .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-bottom: 16px; }
@@ -155,6 +156,7 @@
 </head>
 <body>
 
+<!-- NAVIGATION -->
 <nav>
   <div class="nav-inner">
     <a href="#" class="nav-logo">Start<span>Fractional</span></a>
@@ -166,6 +168,7 @@
   </div>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-left">
@@ -273,18 +276,18 @@
   </div>
 </section>
 
-<!-- RESTORED: EXECUTIVE MODAL WITH DETAILED FIELDS -->
+<!-- AUTOMATED: EXECUTIVE MODAL -->
 <div id="modal-exec" class="modal-overlay" onclick="closeModal(event, 'exec')">
   <div class="modal-card" onclick="event.stopPropagation()">
     <button class="close-modal" onclick="closeModal(null, 'exec')">&times;</button>
     <h2 style="font-family: var(--font-display); margin-bottom: 8px;">Executive Application</h2>
     <p style="font-size:14px; color:var(--text-muted); margin-bottom:24px;">Apply to join our vetted talent pool.</p>
     
-    <form action="https://formspree.io/f/mkopgolj" method="POST">
-      <input type="hidden" name="_subject" value="New Executive Application">
+    <!-- Updated to use handleAutomation -->
+    <form onsubmit="handleAutomation(event, 'exec')">
       <div class="form-group">
         <label>Full Name</label>
-        <input type="text" name="name" required>
+        <input type="text" name="full_name" required>
       </div>
       <div class="form-group">
         <label>Work Email</label>
@@ -292,11 +295,11 @@
       </div>
       <div class="form-group">
         <label>LinkedIn Profile URL</label>
-        <input type="url" name="linkedin" required>
+        <input type="url" name="linkedin_url" required>
       </div>
       <div class="form-group">
         <label>Primary Role</label>
-        <select name="role">
+        <select name="primary_role">
           <option value="cfo">Fractional CFO</option>
           <option value="cto">Fractional CTO</option>
           <option value="cmo">Fractional CMO</option>
@@ -306,29 +309,29 @@
       </div>
       <div class="form-group">
         <label>Years of Executive Exp.</label>
-        <input type="number" name="experience" required>
+        <input type="number" name="years_exp" required>
       </div>
       <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">Submit Application</button>
     </form>
   </div>
 </div>
 
-<!-- RESTORED: COMPANY MODAL WITH DETAILED FIELDS -->
+<!-- AUTOMATED: COMPANY MODAL -->
 <div id="modal-company" class="modal-overlay" onclick="closeModal(event, 'company')">
   <div class="modal-card" onclick="event.stopPropagation()">
     <button class="close-modal" onclick="closeModal(null, 'company')">&times;</button>
     <h2 style="font-family: var(--font-display); margin-bottom: 8px;">Post a Hiring Need</h2>
     <p style="font-size:14px; color:var(--text-muted); margin-bottom:24px;">Get matched with vetted talent in 48 hours.</p>
     
-    <form action="https://formspree.io/f/mbdplgoy" method="POST">
-      <input type="hidden" name="_subject" value="New Hiring Need">
+    <!-- Updated to use handleAutomation -->
+    <form onsubmit="handleAutomation(event, 'company')">
       <div class="form-group">
         <label>Company Name</label>
         <input type="text" name="company_name" required>
       </div>
       <div class="form-group">
         <label>Work Email</label>
-        <input type="email" name="email" required>
+        <input type="email" name="contact_email" required>
       </div>
       <div class="form-group">
         <label>Role Needed</label>
@@ -340,8 +343,8 @@
         </select>
       </div>
       <div class="form-group">
-        <label>Monthly Budget</label>
-        <select name="budget">
+        <label>Monthly Budget Range</label>
+        <select name="budget_range">
           <option value="5-10k">$5k - $10k/mo</option>
           <option value="10-15k">$10k - $15k/mo</option>
           <option value="15k+">$15k+/mo</option>
@@ -353,6 +356,9 @@
 </div>
 
 <script>
+/**
+ * Tab Switching Logic
+ */
 function switchTab(evt, tabName) {
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -360,15 +366,63 @@ function switchTab(evt, tabName) {
   evt.currentTarget.classList.add('active');
 }
 
+/**
+ * Modal Logic: Open
+ */
 function openModal(type) {
   document.getElementById('modal-' + type).classList.add('active');
   document.body.style.overflow = 'hidden';
 }
 
+/**
+ * Modal Logic: Close
+ */
 function closeModal(event, type) {
   if (!event || event.target === document.getElementById('modal-' + type) || event.target.className === 'close-modal') {
     document.getElementById('modal-' + type).classList.remove('active');
     document.body.style.overflow = 'auto';
+  }
+}
+
+/**
+ * NEW: Automated Form Handler
+ * Talks to the Vercel API, which talks to Supabase and Resend
+ */
+async function handleAutomation(event, type) {
+  event.preventDefault(); // Stop standard form refresh
+  
+  const form = event.target;
+  const btn = form.querySelector('button');
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData.entries());
+
+  // Visual feedback: disable button
+  const originalBtnText = btn.innerText;
+  btn.innerText = "Processing...";
+  btn.disabled = true;
+
+  try {
+    // Call the Vercel API Route you created in /api/apply.js
+    const response = await fetch('/api/apply', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, data })
+    });
+
+    if (response.ok) {
+      alert("Success! We have received your submission and an email confirmation is on its way.");
+      closeModal(null, type);
+      form.reset();
+    } else {
+      throw new Error('API Response Error');
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Connection error. Please check your internet and try again.");
+  } finally {
+    // Reset button state
+    btn.innerText = originalBtnText;
+    btn.disabled = false;
   }
 }
 </script>
