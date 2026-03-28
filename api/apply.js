@@ -1,43 +1,43 @@
-export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).send('Method Not Allowed');
+module.exports = async (req, res) => {
+  // 1. Set headers to always return JSON
+  res.setHeader('Content-Type', 'application/json');
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
   try {
     const { type, data } = req.body;
+    console.log("Received data for type:", type);
 
-    // 1. Clean data
-    const { _subject, ...cleanData } = data;
+    // 2. Validate Environment Variables exist
+    if (!process.env.SUPABASE_URL || !process.env.SUPABASE_KEY) {
+      throw new Error("Missing Supabase Environment Variables in Vercel Settings");
+    }
 
-    // 2. Format URL
     const baseUrl = process.env.SUPABASE_URL.replace(/\/$/, "");
     const table = type === 'exec' ? 'profiles_exec' : 'company_postings';
     const supabaseUrl = `${baseUrl}/rest/v1/${table}`;
 
-    // 3. Insert into Supabase
+    // 3. Talk to Supabase
     const supabaseResponse = await fetch(supabaseUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'apikey': process.env.SUPABASE_KEY,
         'Authorization': `Bearer ${process.env.SUPABASE_KEY}`,
-        'Content-Profile': 'public',
-        'Prefer': 'return=representation' // This asks Supabase for more detail on errors
+        'Prefer': 'return=minimal'
       },
-      body: JSON.stringify(cleanData)
+      body: JSON.stringify(data)
     });
 
-    const result = await supabaseResponse.json();
-
     if (!supabaseResponse.ok) {
-      // THIS IS THE KEY: We send the actual Supabase error back to you
-      console.error("Supabase Error:", result);
-      return res.status(400).json({ 
-        error: "Supabase Error", 
-        details: result.message || JSON.stringify(result) 
-      });
+      const errorData = await supabaseResponse.text();
+      return res.status(400).json({ error: "Supabase Error", details: errorData });
     }
 
     // 4. Send Email via Resend
-    try {
+    if (process.env.RESEND_API_KEY) {
       await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
@@ -46,18 +46,17 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           from: 'onboarding@resend.dev', 
-          to: cleanData.email || cleanData.contact_email,
-          subject: type === 'exec' ? 'Application Received' : 'Hiring Need Received',
-          html: `<p>We received your ${type} submission. We are reviewing it now.</p>`
+          to: data.email || data.contact_email,
+          subject: 'StartFractional Confirmation',
+          html: `<p>We received your submission. We are reviewing it now.</p>`
         })
       });
-    } catch (e) {
-      console.log("Email failed but data was saved.");
     }
 
     return res.status(200).json({ success: true });
 
-  } catch (error) {
-    return res.status(500).json({ error: "Server Error", details: error.message });
+  } catch (err) {
+    console.error("Function Error:", err.message);
+    return res.status(500).json({ error: "Server Crash", details: err.message });
   }
-}
+};
