@@ -382,8 +382,8 @@ function closeModal(event, type) {
 }
 
 /**
- * NEW: Automated Form Handler
- * Integrated with enhanced error reporting.
+ * Robust Form Handler
+ * Checks for HTML vs JSON responses to prevent crashes.
  */
 async function handleAutomation(event, type) {
   event.preventDefault(); // Stop standard form refresh
@@ -405,20 +405,29 @@ async function handleAutomation(event, type) {
       body: JSON.stringify({ type, data })
     });
 
-    const result = await response.json();
-
-    if (response.ok) {
-      alert("Success! We have received your submission.");
-      closeModal(null, type);
-      form.reset();
+    // Check if the response is actually JSON before parsing
+    const contentType = response.headers.get("content-type");
+    
+    if (contentType && contentType.indexOf("application/json") !== -1) {
+      const result = await response.json();
+      if (response.ok) {
+        alert("Success! Your submission has been saved.");
+        closeModal(null, type);
+        form.reset();
+      } else {
+        // Business logic error (e.g., Supabase rejection)
+        alert("Server Error: " + (result.details || result.error || "Unknown error"));
+        console.error("API Error Result:", result);
+      }
     } else {
-      // Show exactly what the server didn't like (e.g., column mismatch)
-      alert("Server Error: " + (result.details || result.error || "Check Vercel Logs"));
-      console.error("Server Result:", result);
+      // Vercel crashed or path is wrong (sent back an HTML error page)
+      const textError = await response.text();
+      console.error("Received HTML instead of JSON. Full response:", textError);
+      alert("System Error: The server sent an invalid response (HTML). Check Vercel Logs for the specific crash reason.");
     }
   } catch (err) {
-    console.error(err);
-    alert("Connection error. Check your internet or Vercel logs.");
+    console.error("Network Fetch Error:", err);
+    alert("Connection Error: Could not reach the server. Please check your internet.");
   } finally {
     // Reset button state
     btn.innerText = originalBtnText;
