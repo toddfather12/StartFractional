@@ -14,45 +14,41 @@
   }
   body { font-family: var(--font-body); background: #FAFAF9; color: #374151; line-height: 1.7; overflow-x: hidden; }
 
-  /* UI Components */
+  /* UI Styling */
   nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(13,35,64,0.97); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.1); }
   .nav-inner { max-width: 1280px; margin: 0 auto; padding: 0 80px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
   .nav-logo { font-family: var(--font-display); color: #fff; font-size: 20px; text-decoration: none; }
   .nav-logo span { color: var(--teal-mid); }
-  .nav-cta { background: var(--teal); color: #fff; padding: 8px 20px; border-radius: 6px; cursor: pointer; border: none; font-weight: 600; }
 
   .hero { background: var(--navy); min-height: 100vh; display: flex; align-items: center; padding: 120px 80px 80px; color: #fff; }
-  .hero-inner { max-width: 1280px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
   .hero h1 { font-family: var(--font-display); font-size: clamp(40px, 4.5vw, 64px); line-height: 1.1; }
-  .hero h1 em { font-style: normal; color: var(--teal-mid); }
-
-  .section { padding: 96px 80px; }
-  .how-bg { background: var(--navy); color: #fff; padding: 96px 100px; }
-
-  /* MODALS & FORMS */
+  
+  /* Modal Logic */
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(13,35,64,0.9); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
   .modal-overlay.active { display: flex; }
-  .modal-card { background: white; width: 100%; max-width: 550px; padding: 40px; border-radius: 16px; position: relative; max-height: 95vh; overflow-y: auto; }
+  .modal-card { background: white; width: 100%; max-width: 550px; padding: 40px; border-radius: 16px; position: relative; max-height: 95vh; overflow-y: auto; color: var(--navy); }
   .close-modal { position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer; border: none; background: none; }
-  
+
+  /* Form UI */
   .form-group { margin-bottom: 20px; }
-  .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--navy); margin-bottom: 8px; text-transform: uppercase; }
-  .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; }
-
-  /* Multi-Select Checkbox UI */
-  .checkbox-group { 
-    border: 1px solid var(--border); border-radius: 6px; padding: 12px; max-height: 180px; overflow-y: auto; background: #f9fafb;
-  }
+  .form-group label { display: block; font-size: 11px; font-weight: 700; color: var(--navy); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 15px; }
+  
+  .checkbox-group { border: 1px solid var(--border); border-radius: 6px; padding: 12px; max-height: 180px; overflow-y: auto; background: #f9fafb; }
   .checkbox-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 14px; cursor: pointer; }
-  .checkbox-item input { width: auto; }
 
+  .btn-primary { background: var(--teal); color: #fff; border: none; padding: 14px 28px; border-radius: 6px; font-weight: 600; cursor: pointer; width: 100%; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--teal-mid); }
+  .btn-primary:disabled { opacity: 0.5; }
+
+  /* Tabs */
   .tab-switcher { display: flex; gap: 4px; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 4px; margin-top: 32px; width: fit-content; }
   .tab-btn { padding: 8px 20px; border-radius: 6px; font-size: 14px; color: rgba(255,255,255,0.5); border: none; background: transparent; cursor: pointer; }
   .tab-btn.active { background: var(--teal); color: #fff; }
   .tab-content { display: none; margin-top: 24px; }
   .tab-content.active { display: block; }
 
-  @media (max-width: 900px) { .hero-inner { grid-template-columns: 1fr; } .section, .hero { padding: 64px 24px; } }
+  @media (max-width: 900px) { .nav-inner, .hero { padding-left: 24px; padding-right: 24px; } }
 </style>
 </head>
 <body>
@@ -60,26 +56,26 @@
 <nav>
   <div class="nav-inner">
     <a href="#" class="nav-logo">Start<span>Fractional</span></a>
-    <div>
-      <button onclick="openModal('company')" class="nav-cta">Post a Need</button>
-    </div>
+    <button onclick="openModal('company')" style="background:var(--teal); color:#fff; border:none; padding:8px 16px; border-radius:6px; font-weight:600; cursor:pointer;">Post a Need</button>
   </div>
 </nav>
 
 <section class="hero">
-  <div class="hero-inner">
-    <div>
+  <div style="max-width:1280px; margin: 0 auto; width: 100%;">
+    <div style="max-width: 600px;">
       <h1>Fractional leadership.<br><em>Verified</em> on both sides.</h1>
       <p style="margin-top:20px; color:rgba(255,255,255,0.6)">Selective marketplace for vetted operators and serious companies.</p>
+      
       <div class="tab-switcher">
         <button class="tab-btn active" onclick="switchTab(event, 'exec')">For Executives</button>
         <button class="tab-btn" onclick="switchTab(event, 'company')">For Companies</button>
       </div>
+
       <div id="tab-exec" class="tab-content active">
-        <button onclick="openModal('exec')" class="nav-cta" style="padding:14px 28px">Apply to Join →</button>
+        <button onclick="openModal('exec')" class="btn-primary" style="width:auto">Apply to Join →</button>
       </div>
       <div id="tab-company" class="tab-content">
-        <button onclick="openModal('company')" class="nav-cta" style="padding:14px 28px">Post a Need →</button>
+        <button onclick="openModal('company')" class="btn-primary" style="width:auto">Post a Need →</button>
       </div>
     </div>
   </div>
@@ -89,18 +85,23 @@
 <div id="modal-exec" class="modal-overlay" onclick="closeModal(event, 'exec')">
   <div class="modal-card" onclick="event.stopPropagation()">
     <button class="close-modal" onclick="closeModal(null, 'exec')">&times;</button>
-    <h2 style="margin-bottom:20px">Executive Application</h2>
+    <h2 style="margin-bottom:8px">Executive Application</h2>
+    <p style="font-size:14px; color:#666; margin-bottom:24px">Join our vetted network of fractional leaders.</p>
+    
     <form onsubmit="handleAutomation(event, 'exec')">
       <div class="form-group"><label>Full Name</label><input type="text" name="full_name" required></div>
-      <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
+      <div class="form-group"><label>Work Email</label><input type="email" name="email" required></div>
       <div class="form-group"><label>LinkedIn URL</label><input type="url" name="linkedin_url" required></div>
       <div class="form-group"><label>Location (City, State)</label><input type="text" name="location" placeholder="e.g. Austin, TX" required></div>
+      
       <div class="form-group">
         <label>Primary Role</label>
         <select name="primary_role">
           <option value="ceo">CEO</option><option value="cfo">CFO</option><option value="cto">CTO</option><option value="cmo">CMO</option><option value="coo">COO</option>
         </select>
       </div>
+
+      <div class="form-group"><label>Years of Executive Experience</label><input type="number" name="years_exp" required></div>
       <div class="form-group"><label>Min Monthly Rate (USD)</label><input type="number" name="min_monthly_rate" placeholder="8000" required></div>
       
       <div class="form-group">
@@ -112,12 +113,12 @@
           <label class="checkbox-item"><input type="checkbox" name="industry_expertise" value="Professional Services"> Professional Services</label>
           <label class="checkbox-item"><input type="checkbox" name="industry_expertise" value="Construction and Real Estate"> Construction and Real Estate</label>
           <label class="checkbox-item"><input type="checkbox" name="industry_expertise" value="Small-to-Medium-Sized Businesses"> SMBs</label>
-          <label class="checkbox-item"><input type="checkbox" name="industry_expertise" value="Retail and Ecommerce"> Retail and Ecommerce</label>
+          <label class="checkbox-item"><input type="checkbox" name="industry_expertise" value="Retail and Ecommerce"> Retail & Ecommerce</label>
           <label class="checkbox-item"><input type="checkbox" name="industry_expertise" value="Nonprofits"> Nonprofits</label>
         </div>
       </div>
 
-      <button type="submit" style="width:100%; background:var(--teal); color:#fff; padding:14px; border:none; border-radius:6px; cursor:pointer; font-weight:600;">Submit Application</button>
+      <button type="submit" class="btn-primary">Complete Application</button>
     </form>
   </div>
 </div>
@@ -126,17 +127,21 @@
 <div id="modal-company" class="modal-overlay" onclick="closeModal(event, 'company')">
   <div class="modal-card" onclick="event.stopPropagation()">
     <button class="close-modal" onclick="closeModal(null, 'company')">&times;</button>
-    <h2 style="margin-bottom:20px">Post a Hiring Need</h2>
+    <h2 style="margin-bottom:8px">Post a Hiring Need</h2>
+    <p style="font-size:14px; color:#666; margin-bottom:24px">Get matched with vetted talent within 48 hours.</p>
+
     <form onsubmit="handleAutomation(event, 'company')">
       <div class="form-group"><label>Company Name</label><input type="text" name="company_name" required></div>
       <div class="form-group"><label>Work Email</label><input type="email" name="contact_email" required></div>
       <div class="form-group"><label>Location / HQ</label><input type="text" name="location" placeholder="e.g. New York, NY" required></div>
+      
       <div class="form-group">
         <label>Role Needed</label>
         <select name="role_needed">
-          <option value="ceo">CEO</option><option value="cfo">CFO</option><option value="cto">CTO</option><option value="cmo">CMO</option>
+          <option value="ceo">CEO</option><option value="cfo">CFO</option><option value="cto">CTO</option><option value="cmo">CMO</option><option value="coo">COO</option>
         </select>
       </div>
+
       <div class="form-group"><label>Max Monthly Budget (USD)</label><input type="number" name="budget_max" placeholder="15000" required></div>
       
       <div class="form-group">
@@ -148,12 +153,12 @@
           <label class="checkbox-item"><input type="checkbox" name="industry_target" value="Professional Services"> Professional Services</label>
           <label class="checkbox-item"><input type="checkbox" name="industry_target" value="Construction and Real Estate"> Construction and Real Estate</label>
           <label class="checkbox-item"><input type="checkbox" name="industry_target" value="Small-to-Medium-Sized Businesses"> SMBs</label>
-          <label class="checkbox-item"><input type="checkbox" name="industry_target" value="Retail and Ecommerce"> Retail and Ecommerce</label>
+          <label class="checkbox-item"><input type="checkbox" name="industry_target" value="Retail and Ecommerce"> Retail & Ecommerce</label>
           <label class="checkbox-item"><input type="checkbox" name="industry_target" value="Nonprofits"> Nonprofits</label>
         </div>
       </div>
 
-      <button type="submit" style="width:100%; background:var(--navy); color:#fff; padding:14px; border:none; border-radius:6px; cursor:pointer; font-weight:600;">Find Matches</button>
+      <button type="submit" class="btn-primary" style="background:var(--navy)">Find Matches</button>
     </form>
   </div>
 </div>
@@ -183,15 +188,12 @@ async function handleAutomation(event, type) {
   const form = event.target;
   const btn = form.querySelector('button');
   
-  // Custom parsing for multi-checkboxes
+  // LOGIC TO CAPTURE MULTIPLE CHECKBOXES INTO AN ARRAY
   const formData = new FormData(form);
   const data = {};
-  
   formData.forEach((value, key) => {
     if (data[key]) {
-      if (!Array.isArray(data[key])) {
-        data[key] = [data[key]];
-      }
+      if (!Array.isArray(data[key])) { data[key] = [data[key]]; }
       data[key].push(value);
     } else {
       data[key] = value;
@@ -209,16 +211,17 @@ async function handleAutomation(event, type) {
       body: JSON.stringify({ type, data })
     });
 
+    const result = await response.json();
+
     if (response.ok) {
-      alert("Success! Your submission is being processed.");
+      alert("Success! Your submission has been received.");
       closeModal(null, type);
       form.reset();
     } else {
-      const res = await response.json();
-      alert("Error: " + (res.details || res.error));
+      alert("Error: " + (result.details || result.error));
     }
   } catch (err) {
-    alert("Connection Error.");
+    alert("Connection Error. Please check Vercel Logs.");
   } finally {
     btn.innerText = originalText;
     btn.disabled = false;
