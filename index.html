@@ -5,12 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>StartFractional — Vetted Fractional Executives</title>
 
-<!-- TYPOGRAPHY: Premium feel with Playfair and DM Sans -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
-  /* RESET & BASE STYLES */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
@@ -33,14 +31,14 @@
   body { font-family: var(--font-body); background: var(--warm-white); color: var(--text); line-height: 1.7; overflow-x: hidden; }
 
   /* NAVIGATION */
-  nav { 
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100; 
-    background: rgba(13,35,64,0.97); backdrop-filter: blur(12px); 
-    border-bottom: 1px solid rgba(255,255,255,0.06); 
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(13,35,64,0.97); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
   }
-  .nav-inner { 
-    max-width: 1280px; margin: 0 auto; padding: 0 80px; height: 64px; 
-    display: flex; align-items: center; justify-content: space-between; 
+  .nav-inner {
+    max-width: 1280px; margin: 0 auto; padding: 0 80px; height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
   }
   .nav-logo { font-family: var(--font-display); color: #fff; font-size: 20px; letter-spacing: -0.02em; text-decoration: none; }
   .nav-logo span { color: var(--teal-mid); }
@@ -53,19 +51,37 @@
   .hero { background: var(--navy); min-height: 100vh; display: flex; align-items: center; padding: 120px 80px 80px; position: relative; overflow: hidden; }
   .hero-inner { max-width: 1280px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; position: relative; z-index: 1; }
   .hero h1 { font-family: var(--font-display); font-size: clamp(40px, 4.5vw, 64px); color: #fff; line-height: 1.1; margin-bottom: 24px; }
-  .hero h1 em { font-style: normal; color: var(--teal-mid); } /* Restored Teal Color */
+  .hero h1 em { font-style: normal; color: var(--teal-mid); }
   .hero-sub { font-size: 18px; color: rgba(255,255,255,0.6); margin-bottom: 40px; max-width: 480px; }
+  .hero-trust { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 24px; }
+  .hero-trust-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.45); }
+  .hero-trust-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal-mid); flex-shrink: 0; }
+
+  /* HERO RIGHT — Executive Preview Stack */
+  .hero-preview { }
+  .hero-preview-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal-mid); margin-bottom: 16px; }
+  .exec-mini-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; gap: 16px; margin-bottom: 10px; transition: background 0.2s; }
+  .exec-mini-card:hover { background: rgba(255,255,255,0.08); }
+  .exec-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 15px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .exec-mini-info { flex: 1; min-width: 0; }
+  .exec-mini-name { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+  .exec-mini-role { font-size: 12px; color: rgba(255,255,255,0.5); }
+  .exec-mini-badge { font-size: 11px; font-weight: 600; color: var(--teal-mid); background: rgba(29,158,117,0.12); border: 1px solid rgba(29,158,117,0.2); padding: 3px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+  .hero-preview-footer { font-size: 13px; color: rgba(255,255,255,0.3); margin-top: 16px; text-align: center; border-top: 1px solid rgba(255,255,255,0.07); padding-top: 16px; }
+  .hero-preview-footer strong { color: rgba(255,255,255,0.55); }
 
   /* BUTTONS */
   .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--teal); color: #fff; padding: 14px 28px; border-radius: 6px; font-size: 15px; font-weight: 600; text-decoration: none; border: none; cursor: pointer; transition: all 0.15s; }
   .btn-primary:hover { background: var(--teal-mid); transform: translateY(-1px); }
 
-  /* PROBLEM SECTION */
+  /* SHARED SECTION STYLES */
   .section { padding: 96px 80px; }
   .section-inner { max-width: 1280px; margin: 0 auto; }
   .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-bottom: 16px; }
   .section-title { font-family: var(--font-display); font-size: clamp(28px, 3vw, 42px); color: var(--navy); line-height: 1.15; margin-bottom: 48px; }
+  .section-sub { font-size: 16px; color: var(--text-muted); max-width: 560px; margin-bottom: 48px; margin-top: -32px; line-height: 1.7; }
 
+  /* PROBLEM SECTION */
   .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
   .problem-col-head { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid var(--border); }
   .problem-col-head.exec { border-color: var(--teal); }
@@ -73,7 +89,26 @@
   .pain-item { display: flex; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--border); }
   .pain-num { font-family: var(--font-mono); font-size: 11px; color: var(--text-hint); flex-shrink: 0; width: 20px; }
 
-  /* HOW IT WORKS (The Process) */
+  /* FEATURED EXECUTIVES */
+  .network-bg { background: #F4F6F9; }
+  .exec-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .exec-card { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; transition: all 0.2s; }
+  .exec-card:hover { box-shadow: 0 8px 24px rgba(13,35,64,0.10); transform: translateY(-2px); border-color: #d1d5db; }
+  .exec-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .exec-card-avatar { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 17px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .exec-card-name { font-size: 15px; font-weight: 600; color: var(--navy); line-height: 1.3; }
+  .exec-card-loc { font-size: 12px; color: var(--text-muted); }
+  .exec-verified { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; color: var(--teal); background: var(--teal-light); padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; }
+  .exec-card-bio { font-size: 13px; color: var(--text-muted); line-height: 1.65; margin-bottom: 16px; }
+  .exec-card-stats { display: flex; gap: 20px; padding: 12px 0; margin-bottom: 14px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .exec-stat-num { font-family: var(--font-mono); font-size: 17px; font-weight: 600; color: var(--navy); line-height: 1; }
+  .exec-stat-label { font-size: 10px; color: var(--text-hint); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
+  .exec-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .exec-tag { font-size: 11px; background: #f3f4f6; color: var(--text-muted); padding: 3px 9px; border-radius: 20px; border: 1px solid var(--border); }
+  .network-cta { text-align: center; margin-top: 48px; }
+  .network-cta p { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; }
+
+  /* HOW IT WORKS */
   .how-bg { background: var(--navy); padding-left: 100px; padding-right: 100px; }
   .steps-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 32px; position: relative; margin-top: 40px; }
   .steps-row::before { content: ''; position: absolute; top: 28px; left: 50px; right: 50px; height: 1px; background: linear-gradient(90deg, transparent, var(--teal-mid), transparent); opacity: 0.3; }
@@ -87,6 +122,22 @@
   .stats-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; text-align: center; }
   .stat-num { font-family: var(--font-display); font-size: 52px; color: #fff; line-height: 1; margin-bottom: 8px; }
   .stat-label { font-size: 15px; color: rgba(255,255,255,0.8); font-weight: 500; }
+
+  /* TESTIMONIALS */
+  .testimonials-bg { background: var(--navy); }
+  .testimonials-bg .section-title { color: #fff; }
+  .testimonials-bg .section-label { color: var(--teal-mid); }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .testimonial-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 32px; display: flex; flex-direction: column; }
+  .testimonial-type { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-bottom: 16px; width: fit-content; }
+  .testimonial-type.company { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.1); }
+  .testimonial-type.exec { background: rgba(29,158,117,0.15); color: var(--teal-mid); border: 1px solid rgba(29,158,117,0.2); }
+  .testimonial-quote { font-family: var(--font-display); font-size: 40px; color: var(--teal-mid); line-height: 1; margin-bottom: 12px; }
+  .testimonial-text { font-size: 15px; color: rgba(255,255,255,0.72); line-height: 1.75; flex: 1; margin-bottom: 24px; }
+  .testimonial-author { display: flex; align-items: center; gap: 12px; border-top: 1px solid rgba(255,255,255,0.07); padding-top: 20px; }
+  .testimonial-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .testimonial-name { font-size: 14px; font-weight: 600; color: #fff; }
+  .testimonial-role { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.4; margin-top: 1px; }
 
   /* PRICING */
   .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
@@ -105,8 +156,6 @@
   .form-group { margin-bottom: 16px; }
   .form-group label { display: block; font-size: 11px; font-weight: 700; color: var(--navy); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
   .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 6px; font-family: var(--font-body); font-size: 15px; }
-
-  /* Multi-Select Industries UI */
   .checkbox-group { border: 1px solid var(--border); border-radius: 6px; padding: 12px; max-height: 180px; overflow-y: auto; background: #f9fafb; }
   .checkbox-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 14px; cursor: pointer; }
   .checkbox-item input { width: auto; }
@@ -119,9 +168,14 @@
   .tab-content.active { display: block; }
 
   @media (max-width: 900px) {
-    .hero-inner, .pricing-grid, .steps-row, .stats-inner, .problem-grid { grid-template-columns: 1fr; }
+    .hero-inner, .pricing-grid, .steps-row, .stats-inner, .problem-grid, .testimonials-grid { grid-template-columns: 1fr; }
+    .exec-grid { grid-template-columns: 1fr 1fr; }
     .steps-row::before, .nav-links { display: none; }
     .section, .hero, .nav-inner, .stats-section, .how-bg { padding-left: 24px; padding-right: 24px; }
+    .hero-preview { display: none; }
+  }
+  @media (max-width: 580px) {
+    .exec-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -132,6 +186,7 @@
     <a href="#" class="nav-logo">Start<span>Fractional</span></a>
     <div class="nav-links">
       <a href="#problem">The Problem</a>
+      <a href="#executives">The Network</a>
       <a href="#how">Process</a>
       <a href="#pricing">Pricing</a>
       <button onclick="openModal('company')" class="nav-cta">Post a Need</button>
@@ -139,13 +194,13 @@
   </div>
 </nav>
 
-<!-- HERO SECTION -->
+<!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-left">
       <h1>Fractional leadership.<br><em>Verified</em> on both sides.</h1>
       <p class="hero-sub">The marketplace where vetted companies hire vetted fractional executives — without recruiter fees or guesswork.</p>
-      
+
       <div class="tab-switcher">
         <button class="tab-btn active" onclick="switchTab(event, 'exec')">I'm an Executive</button>
         <button class="tab-btn" onclick="switchTab(event, 'company')">I'm a Company</button>
@@ -157,11 +212,61 @@
       <div id="tab-company" class="tab-content" style="margin-top:24px;">
         <button onclick="openModal('company')" class="btn-primary">Post a Need →</button>
       </div>
+
+      <div class="hero-trust">
+        <span class="hero-trust-item"><span class="hero-trust-dot"></span>Both sides individually vetted</span>
+        <span class="hero-trust-item"><span class="hero-trust-dot"></span>Zero recruiter fees</span>
+        <span class="hero-trust-item"><span class="hero-trust-dot"></span>First match within 48 hrs</span>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-preview">
+        <div class="hero-preview-label">Recently verified executives</div>
+
+        <div class="exec-mini-card">
+          <div class="exec-avatar" style="background: linear-gradient(135deg, #0F6E56, #1D9E75);">MJ</div>
+          <div class="exec-mini-info">
+            <div class="exec-mini-name">M. Johnson</div>
+            <div class="exec-mini-role">Fractional CFO &middot; Austin, TX &middot; 14 yrs</div>
+          </div>
+          <div class="exec-mini-badge">&#10003; Verified</div>
+        </div>
+
+        <div class="exec-mini-card">
+          <div class="exec-avatar" style="background: linear-gradient(135deg, #1a3a5c, #2d5a8e);">RK</div>
+          <div class="exec-mini-info">
+            <div class="exec-mini-name">R. Kim</div>
+            <div class="exec-mini-role">Fractional CTO &middot; Chicago, IL &middot; 16 yrs</div>
+          </div>
+          <div class="exec-mini-badge">&#10003; Verified</div>
+        </div>
+
+        <div class="exec-mini-card">
+          <div class="exec-avatar" style="background: linear-gradient(135deg, #5B4E7E, #7C3AED);">AP</div>
+          <div class="exec-mini-info">
+            <div class="exec-mini-name">A. Patel</div>
+            <div class="exec-mini-role">Fractional CMO &middot; New York, NY &middot; 11 yrs</div>
+          </div>
+          <div class="exec-mini-badge">&#10003; Verified</div>
+        </div>
+
+        <div class="exec-mini-card">
+          <div class="exec-avatar" style="background: linear-gradient(135deg, #B45309, #D97706);">TW</div>
+          <div class="exec-mini-info">
+            <div class="exec-mini-name">T. Williams</div>
+            <div class="exec-mini-role">Fractional COO &middot; Dallas, TX &middot; 19 yrs</div>
+          </div>
+          <div class="exec-mini-badge">&#10003; Verified</div>
+        </div>
+
+        <div class="hero-preview-footer">Applications reviewed within <strong>48 hours</strong></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- THE PROBLEM SECTION (Restored) -->
+<!-- THE PROBLEM -->
 <section class="section" id="problem">
   <div class="section-inner">
     <div class="section-label">The problem</div>
@@ -181,7 +286,107 @@
   </div>
 </section>
 
-<!-- THE PROCESS SECTION -->
+<!-- THE NETWORK — Featured Executives -->
+<section class="section network-bg" id="executives">
+  <div class="section-inner">
+    <div class="section-label">The Network</div>
+    <h2 class="section-title">The caliber of executives<br>you'll access.</h2>
+    <p class="section-sub">Every executive on StartFractional is individually reviewed — background verified, references checked, and fractional track record confirmed before they ever appear in a match.</p>
+    <div class="exec-grid">
+
+      <div class="exec-card">
+        <div class="exec-card-header">
+          <div class="exec-card-avatar" style="background: linear-gradient(135deg, #0F6E56, #1D9E75);">MJ</div>
+          <div>
+            <div class="exec-card-name">M. Johnson</div>
+            <div class="exec-card-loc">Austin, TX</div>
+          </div>
+        </div>
+        <div class="exec-verified">&#10003; Verified Operator</div>
+        <p class="exec-card-bio">Former VP Finance at a Series B SaaS company. Led two fundraising rounds and managed a $40M annual budget before transitioning to fractional work.</p>
+        <div class="exec-card-stats">
+          <div><div class="exec-stat-num">14</div><div class="exec-stat-label">Yrs exp</div></div>
+          <div><div class="exec-stat-num">3</div><div class="exec-stat-label">Engagements</div></div>
+        </div>
+        <div class="exec-tags">
+          <span class="exec-tag">Fractional CFO</span>
+          <span class="exec-tag">Tech &amp; SaaS</span>
+          <span class="exec-tag">Healthcare</span>
+        </div>
+      </div>
+
+      <div class="exec-card">
+        <div class="exec-card-header">
+          <div class="exec-card-avatar" style="background: linear-gradient(135deg, #1a3a5c, #2d5a8e);">RK</div>
+          <div>
+            <div class="exec-card-name">R. Kim</div>
+            <div class="exec-card-loc">Chicago, IL</div>
+          </div>
+        </div>
+        <div class="exec-verified">&#10003; Verified Operator</div>
+        <p class="exec-card-bio">Former CTO at two venture-backed startups, both acquired. Built engineering teams from 3 to 60+. Specializes in product-led growth architecture and technical due diligence.</p>
+        <div class="exec-card-stats">
+          <div><div class="exec-stat-num">16</div><div class="exec-stat-label">Yrs exp</div></div>
+          <div><div class="exec-stat-num">4</div><div class="exec-stat-label">Engagements</div></div>
+        </div>
+        <div class="exec-tags">
+          <span class="exec-tag">Fractional CTO</span>
+          <span class="exec-tag">Manufacturing</span>
+          <span class="exec-tag">Tech &amp; SaaS</span>
+        </div>
+      </div>
+
+      <div class="exec-card">
+        <div class="exec-card-header">
+          <div class="exec-card-avatar" style="background: linear-gradient(135deg, #5B4E7E, #7C3AED);">AP</div>
+          <div>
+            <div class="exec-card-name">A. Patel</div>
+            <div class="exec-card-loc">New York, NY</div>
+          </div>
+        </div>
+        <div class="exec-verified">&#10003; Verified Operator</div>
+        <p class="exec-card-bio">Former VP Marketing at a $500M DTC brand. Scaled digital acquisition from $2M to $28M ARR. Expert in brand positioning and demand generation for growth-stage companies.</p>
+        <div class="exec-card-stats">
+          <div><div class="exec-stat-num">11</div><div class="exec-stat-label">Yrs exp</div></div>
+          <div><div class="exec-stat-num">5</div><div class="exec-stat-label">Engagements</div></div>
+        </div>
+        <div class="exec-tags">
+          <span class="exec-tag">Fractional CMO</span>
+          <span class="exec-tag">Retail &amp; Ecommerce</span>
+          <span class="exec-tag">Consumer</span>
+        </div>
+      </div>
+
+      <div class="exec-card">
+        <div class="exec-card-header">
+          <div class="exec-card-avatar" style="background: linear-gradient(135deg, #B45309, #D97706);">TW</div>
+          <div>
+            <div class="exec-card-name">T. Williams</div>
+            <div class="exec-card-loc">Dallas, TX</div>
+          </div>
+        </div>
+        <div class="exec-verified">&#10003; Verified Operator</div>
+        <p class="exec-card-bio">Former COO at a PE-backed logistics firm with $180M in revenue. Expert in operational infrastructure, cost reduction, and scaling teams through rapid growth phases.</p>
+        <div class="exec-card-stats">
+          <div><div class="exec-stat-num">19</div><div class="exec-stat-label">Yrs exp</div></div>
+          <div><div class="exec-stat-num">6</div><div class="exec-stat-label">Engagements</div></div>
+        </div>
+        <div class="exec-tags">
+          <span class="exec-tag">Fractional COO</span>
+          <span class="exec-tag">Logistics</span>
+          <span class="exec-tag">Professional Services</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="network-cta">
+      <p>Ready to find your match?</p>
+      <button onclick="openModal('company')" class="btn-primary" style="background:var(--navy);">Post a Need — See Your Matches &rarr;</button>
+    </div>
+  </div>
+</section>
+
+<!-- THE PROCESS -->
 <section class="section how-bg" id="how">
   <div class="section-inner">
     <div class="section-label" style="color: var(--teal-mid);">How it works</div>
@@ -219,17 +424,67 @@
 <!-- STATS BAR -->
 <div class="stats-section">
   <div class="stats-inner">
-    <div class="stat-item"><div class="stat-num">2</div><div class="stat-label">Sides vetted — every time</div></div>
-    <div class="stat-item"><div class="stat-num">5</div><div class="stat-label">Match dimensions scored</div></div>
-    <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">Recruiter fees, ever</div></div>
+    <div class="stat-item"><div class="stat-num">&lt;48h</div><div class="stat-label">Average time to first match</div></div>
+    <div class="stat-item"><div class="stat-num">$0</div><div class="stat-label">Recruiter commissions, ever</div></div>
+    <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Executives individually vetted</div></div>
   </div>
 </div>
 
-<!-- PRICING SECTION -->
+<!-- TESTIMONIALS -->
+<section class="section testimonials-bg" id="testimonials">
+  <div class="section-inner">
+    <div class="section-label">What they're saying</div>
+    <h2 class="section-title">Both sides win.<br>When the match is right.</h2>
+    <div class="testimonials-grid">
+
+      <div class="testimonial-card">
+        <div class="testimonial-type company">Company</div>
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-text">We needed a fractional CFO fast, without the recruiter circus. StartFractional matched us with three verified candidates in under 72 hours. We closed the engagement two weeks later.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background: linear-gradient(135deg, #1a3a5c, #2d5a8e);">JM</div>
+          <div>
+            <div class="testimonial-name">J. Martinez</div>
+            <div class="testimonial-role">Founder &amp; CEO · Series A Healthcare SaaS</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-type exec">Executive</div>
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-text">I was tired of cold recruiter calls for roles that weren't a fit. One profile here got me two qualified intro calls in the first month — both companies were exactly the stage I work best with.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background: linear-gradient(135deg, #5B4E7E, #7C3AED);">SR</div>
+          <div>
+            <div class="testimonial-name">S. Rodriguez</div>
+            <div class="testimonial-role">Fractional CMO · 4 engagements completed</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-type company">Company</div>
+        <div class="testimonial-quote">"</div>
+        <p class="testimonial-text">The double-sided vetting was the deciding factor for us. We knew the executive had actually run fractional engagements before — not just a full-time exec looking for a side gig.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background: linear-gradient(135deg, #B45309, #D97706);">KL</div>
+          <div>
+            <div class="testimonial-name">K. Liu</div>
+            <div class="testimonial-role">VP Operations · Manufacturing, $180M revenue</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
 <section class="section" id="pricing">
   <div class="section-inner">
     <div class="section-label">Pricing</div>
-    <h2 class="section-title">Transparent models for<br>vetted operators & companies.</h2>
+    <h2 class="section-title">Transparent models for<br>vetted operators &amp; companies.</h2>
     <div class="pricing-grid">
       <div class="pricing-card">
         <div class="section-label" style="color: var(--teal);">Executives</div>
@@ -274,13 +529,13 @@
       <div class="form-group"><label>Min Monthly Rate (USD)</label><input type="number" name="min_monthly_rate" placeholder="8000" required></div>
       <div class="form-group"><label>Industry Expertise (Select multiple)</label>
         <div class="checkbox-group">
-          <label class="checkbox-item"><input type="checkbox" name="industry_expertise" value="Technology & SaaS"> Technology & SaaS</label>
-          <label class="checkbox-item"><input type="checkbox" name="industry_expertise" value="Healthcare & HealthTech"> Healthcare & HealthTech</label>
-          <label class="checkbox-item"><input type="checkbox" name="industry_expertise" value="Manufacturing & Logistics"> Manufacturing & Logistics</label>
+          <label class="checkbox-item"><input type="checkbox" name="industry_expertise" value="Technology & SaaS"> Technology &amp; SaaS</label>
+          <label class="checkbox-item"><input type="checkbox" name="industry_expertise" value="Healthcare & HealthTech"> Healthcare &amp; HealthTech</label>
+          <label class="checkbox-item"><input type="checkbox" name="industry_expertise" value="Manufacturing & Logistics"> Manufacturing &amp; Logistics</label>
           <label class="checkbox-item"><input type="checkbox" name="industry_expertise" value="Professional Services"> Professional Services</label>
           <label class="checkbox-item"><input type="checkbox" name="industry_expertise" value="Construction and Real Estate"> Construction and Real Estate</label>
           <label class="checkbox-item"><input type="checkbox" name="industry_expertise" value="Small-to-Medium-Sized Businesses"> SMBs</label>
-          <label class="checkbox-item"><input type="checkbox" name="industry_expertise" value="Retail and Ecommerce"> Retail & Ecommerce</label>
+          <label class="checkbox-item"><input type="checkbox" name="industry_expertise" value="Retail and Ecommerce"> Retail &amp; Ecommerce</label>
           <label class="checkbox-item"><input type="checkbox" name="industry_expertise" value="Nonprofits"> Nonprofits</label>
         </div>
       </div>
@@ -306,13 +561,13 @@
       <div class="form-group"><label>Max Monthly Budget (USD)</label><input type="number" name="budget_max" placeholder="15000" required></div>
       <div class="form-group"><label>Target Industries (Select multiple)</label>
         <div class="checkbox-group">
-          <label class="checkbox-item"><input type="checkbox" name="industry_target" value="Technology & SaaS"> Technology & SaaS</label>
-          <label class="checkbox-item"><input type="checkbox" name="industry_target" value="Healthcare & HealthTech"> Healthcare & HealthTech</label>
-          <label class="checkbox-item"><input type="checkbox" name="industry_target" value="Manufacturing & Logistics"> Manufacturing & Logistics</label>
+          <label class="checkbox-item"><input type="checkbox" name="industry_target" value="Technology & SaaS"> Technology &amp; SaaS</label>
+          <label class="checkbox-item"><input type="checkbox" name="industry_target" value="Healthcare & HealthTech"> Healthcare &amp; HealthTech</label>
+          <label class="checkbox-item"><input type="checkbox" name="industry_target" value="Manufacturing & Logistics"> Manufacturing &amp; Logistics</label>
           <label class="checkbox-item"><input type="checkbox" name="industry_target" value="Professional Services"> Professional Services</label>
           <label class="checkbox-item"><input type="checkbox" name="industry_target" value="Construction and Real Estate"> Construction and Real Estate</label>
           <label class="checkbox-item"><input type="checkbox" name="industry_target" value="Small-to-Medium-Sized Businesses"> SMBs</label>
-          <label class="checkbox-item"><input type="checkbox" name="industry_target" value="Retail and Ecommerce"> Retail & Ecommerce</label>
+          <label class="checkbox-item"><input type="checkbox" name="industry_target" value="Retail and Ecommerce"> Retail &amp; Ecommerce</label>
           <label class="checkbox-item"><input type="checkbox" name="industry_target" value="Nonprofits"> Nonprofits</label>
         </div>
       </div>
@@ -347,7 +602,7 @@ async function handleAutomation(event, type) {
   const btn = form.querySelector('button');
   const formData = new FormData(form);
   const data = {};
-  
+
   formData.forEach((value, key) => {
     if (data[key]) {
       if (!Array.isArray(data[key])) { data[key] = [data[key]]; }
